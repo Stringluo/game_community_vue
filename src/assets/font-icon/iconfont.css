@@ -1,0 +1,38 @@
+@font-face {
+  font-family: "element-icons"; /* Project id 3346043 */
+  src: url('iconfont.eot?t=1650726481434'); /* IE9 */
+  src: url('iconfont.eot?t=1650726481434#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('iconfont.woff2?t=1650726481434') format('woff2'),
+       url('iconfont.woff?t=1650726481434') format('woff'),
+       url('iconfont.ttf?t=1650726481434') format('truetype'),
+       url('iconfont.svg?t=1650726481434#element-icons') format('svg');
+}
+
+.element-icons {
+  font-family: "element-icons" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.el-icon-unlike:before {
+  content: "\e60c";
+}
+
+.el-icon-exit:before {
+  content: "\e60e";
+}
+
+.el-icon-sex-woman:before {
+  content: "\e694";
+}
+
+.el-icon-sex-man:before {
+  content: "\e617";
+}
+
+.el-icon-like:before {
+  content: "\ec7f";
+}
+

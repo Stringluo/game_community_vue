@@ -18,7 +18,7 @@ Vue.use(ElementUI);
 //配置ajax请求根路径
 //axios.defaults.baseURL = "http://localhost:8080/";
 //跨域请求携带Cookie等
-//axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true;
 Vue.use(VueAxios,axios);
 
 new Vue({

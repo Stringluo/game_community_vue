@@ -1,5 +1,30 @@
 <template>
   <div class="gc-post">
+    <el-dialog
+        title="管理"
+        :visible.sync="centerDialogVisible"
+        width="30%"
+        top="30vh"
+        center>
+      <el-radio v-model="operate" label="edit">编辑</el-radio>
+      <el-radio v-model="operate" label="del">删除</el-radio>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="centerDialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="centerDialogVisible = false;operatePost(post.postId);">确 定</el-button></span>
+    </el-dialog>
+    <el-dialog
+        title="提示"
+        :visible.sync="deleteDialogVisible"
+        width="30%"
+        top="30vh"
+        center>
+      <div style="width: 100%;align-content: center;text-align: center">
+        <span>确定要删除该帖吗？</span>
+      </div>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="deleteDialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="deleteDialogVisible = false;delPost(post.postId);">确 定</el-button></span>
+    </el-dialog>
     <el-row :gutter="20">
       <div class="post-info-flex">
         <el-card :body-style="{border: '#F0F1F5 solid 1px',color: '#999999',fontSize: '14px'}"
@@ -18,6 +43,12 @@
           <i @click="clickLike(post)" :class="{'flag-true':flag.like}"
              class="el-icon-like post-info-icon"></i>
           <br>{{ post.postLikesNum }}
+        </el-card>
+        <el-card v-if="post.userId===loginUser.userId"
+                 :body-style="{border: '#F0F1F5 solid 1px',color: '#999999',fontSize: '14px'}"
+                 shadow="never" style="border: 0">
+          <i @click="clickSetting(post)"
+             class="el-icon-setting post-info-icon"></i>
         </el-card>
       </div>
       <el-col :span="17">
@@ -115,7 +146,7 @@
 
 <script>
 import {mapState, mapMutations} from "vuex";
-import {getPostData, commentPost, cancelLikePost, likePost} from "@/api";
+import {getPostData, commentPost, cancelLikePost, likePost, deletePost} from "@/api";
 import {collectionPost, cancelCollectionPost, focusUser, cancelFocusUser} from "@/api";
 import {getTime, getPartitionName, isNotEmpty} from "@/uitls";
 import GCCommentInput from "@/components/others/GCCommentInput";
@@ -143,6 +174,9 @@ export default {
   },
   data() {
     return {
+      operate: "edit",
+      centerDialogVisible: false,
+      deleteDialogVisible: false,
       postPage: {
         pageNum: 1,
         commentSum: 5,
@@ -171,6 +205,32 @@ export default {
   },
   methods: {
     ...mapMutations(['toPage']),
+    operatePost(postId) {
+      if (this.operate === "edit") {
+        this.editPost(postId);
+      } else if (this.operate === "del") {
+        this.deleteDialogVisible = true;
+      }
+    },
+    editPost(postId) {
+      this.toPage({name:"newPost",query:{editPostId:postId}});
+    },
+    async delPost(postId) {
+      let result = await deletePost(postId);
+      if(result.flag){
+        //删除成功
+        this.toPage({name:"index"})
+        this.$message({
+          message: '删除成功',
+          type: 'success'
+        });
+      }else {
+        this.$message.error('删除失败');
+      }
+    },
+    clickSetting() {
+      this.centerDialogVisible = true;
+    },
     openLoad() {
       const loading = this.$loading({
         lock: true,

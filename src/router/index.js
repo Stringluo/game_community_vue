@@ -11,6 +11,7 @@ import FindPassword from "@/views/operate/FindPassword";
 import Register from "@/views/operate/Register";
 import PostList from "@/views/home/user/PostList";
 import EditUser from "@/views/home/user/EditUser";
+import Admin from "@/views/Admin";
 
 Vue.use(VueRouter)
 
@@ -59,7 +60,11 @@ const routes = [
                     },
                 ]
             },
-            {name: "newPost", path: "newPost", component: NewPost},
+            {name: "newPost", path: "newPost", component: NewPost, props($route) {
+                    return {
+                        editPostId: $route.query.editPostId
+                    }
+                }},
         ]
     },
     //操作
@@ -70,6 +75,9 @@ const routes = [
             {name: "register", path: "register", component: Register},
         ]
     },
+    {
+        path: "/admin", component: Admin,
+    }
 ]
 
 const router = new VueRouter({

@@ -19,7 +19,6 @@
           <el-radio-group v-model="post.partitionId">
             <el-radio :label="1">酒馆</el-radio>
             <el-radio :label="2">攻略</el-radio>
-            <el-radio :label="3">官方</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -30,22 +29,24 @@
 
 <script>
 import '@wangeditor/editor/dist/css/style.css';
-import {createEditor, createToolbar} from '@wangeditor/editor';
+import {createEditor, createToolbar, SlateTransforms} from '@wangeditor/editor';
 import $ from "jquery";
-import {releasePost} from "@/api";
+import {editPost, getPost, releasePost} from "@/api";
 
 let editor;
 
 export default {
   name: "NewPost",
+  props: ["editPostId"],
   components: {},
   data() {
     return {
+      editPost:Object,
       post: {
         postTitle: '',
         postArticle: '',
         postAbbreviation: '',
-        partitionId: 3,
+        partitionId: null,
         imgUrls: [],
       },
       releaseFlag: false,
@@ -60,7 +61,41 @@ export default {
     }
   },
   methods: {
-    async release() {
+    async initEditPost(editPostId){
+      let result = await getPost(editPostId);
+      if(result.flag){
+        this.post.postTitle = result.data.postTitle;
+        this.post.partitionId = result.data.partitionId;
+        editor.dangerouslyInsertHtml(result.data.postArticle);
+      }
+    },
+    release(){
+      if(this.editPostId){
+        //编辑帖子
+        this.editorPost();
+      }else {
+        //发布新的帖子
+        this.releasePost();
+      }
+    },
+    async editorPost() {
+      let postArticle = editor.getHtml();
+      this.post.postId = this.editPostId;
+      this.post.postArticle = postArticle;
+      this.post.postAbbreviation = editor.getText().replace(/\s+/g, "").substring(0, 200);
+      this.post.imgUrls.forEach((imgUrl) => {
+        if (!postArticle.includes(imgUrl.url)) {
+          imgUrl.flag = false;
+        }
+      });
+      let result = await editPost(this.post);
+      if (result.flag) {
+        this.releaseFlag = true;
+        //alert("修改成功");
+        await this.$router.push("/");
+      }
+    },
+    async releasePost() {
       let postArticle = editor.getHtml();
       this.post.postArticle = postArticle;
       this.post.postAbbreviation = editor.getText().replace(/\s+/g, "").substring(0, 200);
@@ -147,8 +182,7 @@ export default {
         // 超时时间，默认为 10 秒
         timeout: 5 * 1000, // 5 秒
 
-      }
-
+      };
       editor = createEditor({
         selector: '#editor-container',
         config: editorConfig,
@@ -170,8 +204,9 @@ export default {
       });
     }
   },
-  mounted() {
+  async mounted() {
     this.initEditor();
+    await this.initEditPost(this.editPostId);
   }
 }
 </script>

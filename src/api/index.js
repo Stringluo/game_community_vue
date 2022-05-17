@@ -18,6 +18,10 @@ export const getPostData = (postPage) => {
         return ajax("shows/getPostData", postPage, "POST");
     }
 };
+/*获取帖子简要数据*/
+export const getPost = (postId) => {
+    return ajax("shows/getPost/" + postId);
+};
 /*根据用户Id获取用户信息*/
 export const getUserById = (id) => {
     return ajax("shows/getUserById/" + id);
@@ -110,6 +114,14 @@ export const cancelFocusUser = (focusUserId) => {
 export const releasePost = (post) => {
     return ajax("posts/releasePost", post, "POST");
 };
+/*修改帖子*/
+export const editPost = (post) => {
+    return ajax("posts/editPost", post, "POST");
+};
+/*删除帖子*/
+export const deletePost = (postId) => {
+    return ajax("posts/deletePost/" + postId, null, "DELETE");
+}
 
 /**
  * 对评论数据进行操作（需要用户登录）

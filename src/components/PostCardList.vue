@@ -9,7 +9,9 @@
         <p>暂时没有帖子哦</p>
       </el-card>
       <el-card :body-style="{padding: '24px 30px',border: '#F0F1F5 solid 1px'}"
-               v-for="post in postCardData" class="box-card" shadow="never" style="border: 0">
+               v-for="post in postCardData"
+               :key="post.postId"
+               class="box-card" shadow="never" style="border: 0">
         <div class="post-header display-flex">
           <div class="post-user"
                @mouseenter="changeOnMouseId(post.postId)"

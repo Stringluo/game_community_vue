@@ -12,6 +12,7 @@ export default new Vuex.Store({
     state: {
         //全局变量
         //请求后端服务器根路径
+        //BASEURL: "http://124.220.194.48:40011/",
         BASEURL: "http://localhost:8080/",
 
         //默认用户头像路径

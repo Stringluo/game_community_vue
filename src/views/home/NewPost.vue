@@ -32,6 +32,7 @@ import '@wangeditor/editor/dist/css/style.css';
 import {createEditor, createToolbar, SlateTransforms} from '@wangeditor/editor';
 import $ from "jquery";
 import {editPost, getPost, releasePost} from "@/api";
+import {mapState} from "vuex";
 
 let editor;
 
@@ -51,6 +52,9 @@ export default {
       },
       releaseFlag: false,
     }
+  },
+  computed: {
+    ...mapState(['BASEURL']),
   },
   beforeDestroy() {
     if (!this.releaseFlag) {
@@ -82,7 +86,7 @@ export default {
       let postArticle = editor.getHtml();
       this.post.postId = this.editPostId;
       this.post.postArticle = postArticle;
-      this.post.postAbbreviation = editor.getText().replace(/\s+/g, "").substring(0, 200);
+      this.post.postAbbreviation = editor.getText().replace(/\s+/g, "").substring(0, 100);
       this.post.imgUrls.forEach((imgUrl) => {
         if (!postArticle.includes(imgUrl.url)) {
           imgUrl.flag = false;
@@ -145,7 +149,7 @@ export default {
         }
       }
       let _this = this;
-      let BASEURL = this.$store.state.BASEURL;
+      let BASEURL = _this.BASEURL;
       const editorConfig = {MENU_CONF: {}}
       editorConfig.placeholder = '请尽情发挥吧...';
       editorConfig.maxLength = 30000;
@@ -160,7 +164,7 @@ export default {
           };
           _this.post.imgUrls.push(imgUrl);
         },
-        server: 'http://localhost:80/posts/uploadImg',
+        server: _this.BASEURL+'posts/uploadImg',
         // form-data fieldName ，默认值 'wangeditor-uploaded-image'
         fieldName: 'file',
 

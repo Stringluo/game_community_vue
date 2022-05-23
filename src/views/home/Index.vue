@@ -10,7 +10,7 @@
           </a>
         </el-carousel-item>
       </el-carousel>
-      <post-card-list :postCardData="postCardData" @getMoreData="getMoreDate"></post-card-list>
+      <post-card-list :isAllPost="isAllPost" :postCardData="postCardData" @getMoreData="getMoreDate"></post-card-list>
     </el-col>
     <el-col :span="7">
       <el-card class="box-card release-card">
@@ -47,6 +47,7 @@ export default {
   },
   data() {
     return {
+      isAllPost: false,
       fullscreenLoading: false,
       //轮播图数据
       postImgS: [
@@ -76,7 +77,7 @@ export default {
         }
       ],
       postPage: {
-        searchParam:null,
+        searchParam: null,
       },
     }
   },
@@ -120,6 +121,11 @@ export default {
       let result2 = await getPostList(this.postPage);
       if (result2.flag) {
         this.postCardData = result2.data;
+        if (this.postCardData.length < 5) {
+          this.isAllPost = true;
+        } else {
+          this.isAllPost = false;
+        }
       }
       if (result1.flag && result2.flag) {
         loading.close();
@@ -131,6 +137,11 @@ export default {
       let result = await getPostList(this.postPage);
       if (result.flag) {
         this.postCardData = this.postCardData.concat(result.data);
+        if (result.data.length < 5) {
+          this.isAllPost = true;
+        } else {
+          this.isAllPost = false;
+        }
       }
     }
   },

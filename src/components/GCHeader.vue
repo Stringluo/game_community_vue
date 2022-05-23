@@ -32,12 +32,12 @@
           background-color="#2D2F33"
           :router=true
           @select="clickUser">
-        <el-menu-item index="1" :route="$route.path" v-show="!loginFlag">
+        <el-menu-item index="1" :route="$route.path" v-if="!loginFlag">
           <span data-v-24d52219="" class="el-avatar el-avatar--circle">
             <img :src="BASEURL+defaultUserAvatar" style="object-fit: fill;">
           </span>
         </el-menu-item>
-        <el-menu-item index="1" :route="{name:'postList',query:{userId:loginUser.userId}}" v-show="loginFlag">
+        <el-menu-item index="1" :route="{name:'postList',query:{userId:loginUser.userId}}" v-if="loginFlag">
           <span data-v-24d52219="" class="el-avatar el-avatar--circle">
             <img :src="BASEURL+loginUser.userImgUrl" style="object-fit: fill;">
           </span>

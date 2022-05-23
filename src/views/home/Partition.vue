@@ -1,7 +1,7 @@
 <template>
   <el-row class="top-30" :gutter="20">
     <el-col :span="17">
-      <post-card-list :postCardData="postCardData" @getMoreData="getMoreDate"></post-card-list>
+      <post-card-list :isAllPost="isAllPost" :postCardData="postCardData" @getMoreData="getMoreDate"></post-card-list>
     </el-col>
     <el-col :span="7">
       <el-card class="box-card release-card">
@@ -39,6 +39,7 @@ export default {
   },
   data() {
     return {
+      isAllPost: false,
       //轮播图数据
       postImgS: [
         {
@@ -111,17 +112,15 @@ export default {
       this.postPage.postSum = 5;
       this.postPage.pageNum = 1;
       this.postPage.partitionId = this.partitionId;
-      //获取轮播图数据
-      let result1 = await getNewOfficial();
-      if (result1.flag) {
-        this.postImgS = result1.data;
-      }
       //获取帖子数据
       let result2 = await getPostList(this.postPage);
       if (result2.flag) {
         this.postCardData = result2.data;
-      }
-      if (result1.flag && result2.flag) {
+        if (this.postCardData.length < 5) {
+          this.isAllPost = true;
+        } else {
+          this.isAllPost = false;
+        }
         loading.close();
       }
     },
@@ -131,6 +130,11 @@ export default {
       let result = await getPostList(this.postPage);
       if (result.flag) {
         this.postCardData = this.postCardData.concat(result.data);
+        if (result.data.length < 5) {
+          this.isAllPost = true;
+        } else {
+          this.isAllPost = false;
+        }
       }
     }
   },

@@ -74,14 +74,14 @@ export const verifyCode = (user) => {
 export const loginByCookie = () => {
     return ajax("users/doLoginByCookie");
 };
+/*修改密码*/
+export const changePassword = (user) => {
+    return ajax("users/changePassword", user, "POST");
+};
 
 /**
  * 需要登录权限的后端操作
  */
-/*修改密码*/
-export const changePassword = (user) => {
-    return ajax("loginUsers/changePassword", user, "POST");
-};
 /*退出登录*/
 export const logoutUser = () => {
     return ajax("loginUsers/logoutUser");

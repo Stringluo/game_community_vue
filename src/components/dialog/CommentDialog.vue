@@ -28,6 +28,14 @@
         </el-button>
       </div>
     </template>
+    <template v-show="childrenComments.length!==0">
+      <el-divider></el-divider>
+      <el-link
+          @click="getMoreComment" :disabled="isAllComments"
+          type="primary" :underline="false" style="width: 20%;margin-left: 40%">
+        {{getMoreCommentText}}
+      </el-link>
+    </template>
   </el-dialog>
 </template>
 
@@ -54,6 +62,7 @@ export default {
       newComment: {
         commentContent: null,
       },
+      isAllComments: false,
     }
   },
   mounted() {
@@ -69,8 +78,12 @@ export default {
       if (isNotEmpty(newValue)) {
         //获取基础贴子数据
         this.page.commentId = this.commentId;
+        this.page.pageNum = 1;
         this.comment = await this.getComment();
         this.childrenComments = await this.getCommentPage();
+        if(this.childrenComments.length<5) {
+          this.isAllComments = true;
+        }
       }
     },
   },
@@ -84,6 +97,11 @@ export default {
         this.$store.state.commentDialogVisible = val;
       }
     },
+    getMoreCommentText: {
+      get: function () {
+        return this.isAllComments ? "已经到底了" : "点击加载更多";
+      }
+    }
   },
   methods: {
     ...mapMutations(['setCommentId']),
@@ -97,6 +115,17 @@ export default {
       let result = await getCommentsByPage(this.page);
       if (result.flag) {
         return result.data;
+      } else {
+        return null;
+      }
+    },
+    async getMoreComment() {
+      this.page.pageNum++;
+      let moreComment = await this.getCommentPage();
+      if (moreComment != null) {
+        this.childrenComments = this.childrenComments.concat(moreComment);
+      } else {
+        this.isAllComments = true;
       }
     },
     closeDialog() {

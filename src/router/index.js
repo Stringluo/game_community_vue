@@ -11,7 +11,6 @@ import FindPassword from "@/views/operate/FindPassword";
 import Register from "@/views/operate/Register";
 import PostList from "@/views/home/user/PostList";
 import EditUser from "@/views/home/user/EditUser";
-import Admin from "@/views/Admin";
 
 Vue.use(VueRouter)
 
@@ -74,9 +73,6 @@ const routes = [
             {name: "findPassword", path: "findPassword", component: FindPassword},
             {name: "register", path: "register", component: Register},
         ]
-    },
-    {
-        path: "/admin", component: Admin,
     }
 ]
 

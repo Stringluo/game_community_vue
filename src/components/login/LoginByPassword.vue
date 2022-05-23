@@ -1,9 +1,12 @@
 <template>
-  <el-form class="demo-dynamic" ref="user" :model="user" label-width="0" style="margin-top: 20px">
-    <el-form-item>
+  <el-form
+      :rules="rules" class="demo-dynamic" :status-icon="true"
+      ref="user" :model="user" label-width="0"
+      style="margin-top: 20px">
+    <el-form-item prop="mail">
       <el-input v-model="user.mail" placeholder="邮箱"></el-input>
     </el-form-item>
-    <el-form-item>
+    <el-form-item prop="password">
       <el-input type="password" placeholder="密码" v-model="user.password" class="input-width"></el-input>
     </el-form-item>
     <el-form-item>
@@ -30,6 +33,16 @@ export default {
   props: ["clearDataFlag"],
   data() {
     return {
+      rules: {
+        mail: [
+          {required: true, message: '请输入邮箱地址', trigger: 'blur'},
+          {type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change']}
+        ],
+        password: [
+          {required: true, message: '请输入密码', trigger: 'blur'},
+          {min: 6, max: 20, message: '密码由6-20位数字字母符号组成', trigger: ['blur', 'change']}
+        ],
+      },
       user: {
         mail: "",
         password: "",
@@ -41,29 +54,36 @@ export default {
   watch: {
     clearDataFlag: function (newValue) {
       if (newValue) {
-        this.user.mail = "";
-        this.user.password = "";
-        this.user.rememberMe = false;
+        this.resetForm("user");
       }
     }
   },
   methods: {
-    ...mapMutations(['setLoginUser', 'closeLoginDialog','toPage']),
+    ...mapMutations(['setLoginUser', 'closeLoginDialog', 'toPage']),
     async doLogin() {
-      let result = await loginByPassword(this.user);
-      if(result.flag){
-        this.setLoginUser(result.data);
-        this.closeLoginDialog();
-        location.reload();
-      }
+      this.$refs["user"].validate(async (valid) => {
+        if (valid) {
+          let result = await loginByPassword(this.user);
+          if (result.flag) {
+            this.setLoginUser(result.data);
+            this.closeLoginDialog();
+            location.reload();
+          }
+        } else {
+          return false;
+        }
+      })
     },
-    registerUser(){
-      this.closeLoginDialog();
-      this.toPage({name:'register'});
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
     },
-    findPassword(){
+    registerUser() {
       this.closeLoginDialog();
-      this.toPage({name:'findPassword'});
+      this.toPage({name: 'register'});
+    },
+    findPassword() {
+      this.closeLoginDialog();
+      this.toPage({name: 'findPassword'});
     },
   }
 }

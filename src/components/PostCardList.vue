@@ -69,9 +69,9 @@
       </el-card>
       <el-card v-show="postCardData.length!==0">
         <el-link
-            @click="getMorePostData"
+            @click="getMorePostData" :disabled="isAllPost"
             type="primary" :underline="false" style="width: 20%;margin-left: 40%">
-          点击加载更多
+          {{getMorePostText}}
         </el-link>
       </el-card>
     </el-card>
@@ -85,9 +85,14 @@ import {likePost, cancelLikePost} from "@/api";
 
 export default {
   name: "PostCard",
-  props: ["postCardData", "title"],
+  props: ["postCardData", "title" ,"isAllPost"],
   computed: {
     ...mapState(['BASEURL', 'defaultUserAvatar', 'loginUser']),
+    getMorePostText: {
+      get: function (){
+        return this.isAllPost ? "已经到底了" : "点击加载更多";
+      }
+    }
   },
   data() {
     return {

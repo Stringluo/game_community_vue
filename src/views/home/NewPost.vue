@@ -16,7 +16,10 @@
           <div id="editor-container"></div>
         </el-form-item>
         <el-form-item label="发布板块">
-          <el-radio-group v-model="post.partitionId">
+          <el-radio-group v-model="post.partitionId" v-if="loginUser.userRole===0">
+            <el-radio :label="3">官方</el-radio>
+          </el-radio-group>
+          <el-radio-group v-model="post.partitionId" v-else>
             <el-radio :label="1">酒馆</el-radio>
             <el-radio :label="2">攻略</el-radio>
           </el-radio-group>
@@ -54,7 +57,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['BASEURL']),
+    ...mapState(['BASEURL','loginUser']),
   },
   beforeDestroy() {
     if (!this.releaseFlag) {

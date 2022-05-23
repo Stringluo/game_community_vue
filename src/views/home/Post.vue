@@ -77,7 +77,7 @@
           <div class="post-time">
             文章发表：{{ getTime(post.postCreateTime) }}
             <span v-show="post.postCreateTime!==post.postEditTime">
-              |最后编辑：{{ getTime(post.postEditTime) }}</span>
+              |&em最后编辑：{{ getTime(post.postEditTime) }}</span>
           </div>
           <div class="post-article" v-html="post.postArticle"></div>
           <el-divider></el-divider>

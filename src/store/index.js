@@ -76,11 +76,9 @@ export default new Vuex.Store({
         },
         //跳转页面
         toPage(state, page) {
-            console.log(page.name)
             if (vue.$route.name !== page.name) {
                 //拦截非法跳转
                 if (page.name === "newPost") {
-                    console.log(this);
                     if (!this.getters.loginFlag) {
                         this.commit("openLoginDialog");
                         return null;

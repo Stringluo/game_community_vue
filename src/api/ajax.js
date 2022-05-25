@@ -48,7 +48,9 @@ export function ajax(url, data = {}, type = 'GET') {
         //返回结果的处理
         promise.then(function (response) {
             if (!response.data.flag) {
+                console.log("-----错误信息-----");
                 console.log(response.data.msg);
+                console.log("-----------------");
             }
             resolve(response.data);
         }).catch(function (err) {

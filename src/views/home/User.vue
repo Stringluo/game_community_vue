@@ -56,7 +56,25 @@
               <i class="el-icon-document"></i>
               <span slot="title">{{ isLogin(user.userId) ? "我的" : "" }}发帖</span>
             </el-menu-item>
-            <el-menu-item index="2" :route="{name:'editUser',query:{userId:userId}}" v-show="isLogin(user.userId)">
+            <el-menu-item index="2" :route="{name:'connectionList',query:{userId:userId}}">
+              <i class="el-icon-star-off"></i>
+              <span slot="title">{{ isLogin(user.userId) ? "我的" : "" }}收藏</span>
+            </el-menu-item>
+            <el-menu-item index="3" :route="{name:'likedList',query:{userId:userId}}">
+              <i class="el-icon-like"></i>
+              <span slot="title">{{ isLogin(user.userId) ? "我的" : "" }}点赞</span>
+            </el-menu-item>
+            <el-divider></el-divider>
+            <el-menu-item index="4" :route="{name:'fansList',query:{userId:userId}}">
+              <i class="el-icon-fans"></i>
+              <span slot="title">{{ isLogin(user.userId) ? "我的" : "" }}粉丝</span>
+            </el-menu-item>
+            <el-menu-item index="5" :route="{name:'focusList',query:{userId:userId}}">
+              <i class="el-icon-focus"></i>
+              <span slot="title">{{ isLogin(user.userId) ? "我的" : "" }}关注</span>
+            </el-menu-item>
+            <el-divider v-show="isLogin(user.userId)"></el-divider>
+            <el-menu-item index="6" :route="{name:'editUser',query:{userId:userId}}" v-show="isLogin(user.userId)">
               <i class="el-icon-edit"></i>
               <span slot="title">编辑资料</span>
             </el-menu-item>

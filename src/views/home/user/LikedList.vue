@@ -1,15 +1,16 @@
 <template>
-  <post-card-list :isAllPost="isAllPost" :title="isLoginUser(userId) ? '我的发帖' : '发帖'" :postCardData="postCardData" @getMoreData="getMoreDate"></post-card-list>
+  <post-card-list :isAllPost="isAllPost" :title="isLoginUser(userId) ? '我的点赞' : '点赞'" :postCardData="postCardData"
+                  @getMoreData="getMoreDate"></post-card-list>
 </template>
 
 <script>
 import PostCardList from "@/components/PostCardList";
-import {getPostList} from "@/api";
 import {mapState} from "vuex";
 import {isNotEmpty} from "@/uitls";
+import {getPostList} from "@/api";
 
 export default {
-  name: "PostList",
+  name: "ConnectionList",
   props: ['userId'],
   components: {
     PostCardList,
@@ -30,7 +31,7 @@ export default {
   },
   watch: {
     userId: function (newValue, oldValue) {
-      if(isNotEmpty(newValue)){
+      if (isNotEmpty(newValue)) {
         this.initPostList();
       }
     }
@@ -40,7 +41,8 @@ export default {
   },
   methods: {
     async initPostList() {
-      this.postPage.userId = this.userId;
+      this.postPage.actionUserId = this.userId;
+      this.postPage.actionCategoryId = 1;
       let result = await getPostList(this.postPage);
       if (result.flag) {
         this.postCardData = result.data;

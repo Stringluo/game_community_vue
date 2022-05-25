@@ -127,6 +127,7 @@ export default {
           this.isAllPost = false;
         }
       }
+
       if (result1.flag && result2.flag) {
         loading.close();
       }

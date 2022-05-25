@@ -11,6 +11,10 @@ import FindPassword from "@/views/operate/FindPassword";
 import Register from "@/views/operate/Register";
 import PostList from "@/views/home/user/PostList";
 import EditUser from "@/views/home/user/EditUser";
+import ConnectionList from "@/views/home/user/ConnectionList";
+import LikedList from "@/views/home/user/LikedList";
+import FansList from "@/views/home/user/FansList";
+import FocusList from "@/views/home/user/FocusList";
 
 Vue.use(VueRouter)
 
@@ -45,6 +49,34 @@ const routes = [
                     {name: "user", path: "/", redirect: "postList"},
                     {
                         name: "postList", path: "postList", component: PostList, props($route) {
+                            return {
+                                userId: $route.query.userId
+                            }
+                        }
+                    },
+                    {
+                        name: "connectionList", path: "connectionList", component: ConnectionList, props($route) {
+                            return {
+                                userId: $route.query.userId
+                            }
+                        }
+                    },
+                    {
+                        name: "likedList", path: "likedList", component: LikedList, props($route) {
+                            return {
+                                userId: $route.query.userId
+                            }
+                        }
+                    },
+                    {
+                        name: "fansList", path: "fansList", component: FansList, props($route) {
+                            return {
+                                userId: $route.query.userId
+                            }
+                        }
+                    },
+                    {
+                        name: "focusList", path: "focusList", component: FocusList, props($route) {
                             return {
                                 userId: $route.query.userId
                             }

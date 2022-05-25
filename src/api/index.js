@@ -34,6 +34,14 @@ export const getCommentById = (id) => {
 export const getCommentsByPage = (page) => {
     return ajax("shows/getCommentsByPage", page, "POST");
 };
+/*获取用户的粉丝数据*/
+export const getUserFans = (userId) => {
+    return ajax("shows/getUserFans/" + userId);
+};
+/*获取用户的粉丝数据*/
+export const getUserFocus = (userId) => {
+    return ajax("shows/getUserFocus/" + userId);
+};
 
 /**
  * utils路径下为一些公有工具类接口

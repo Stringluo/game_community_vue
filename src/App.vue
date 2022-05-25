@@ -25,7 +25,6 @@ export default {
     BackTop,
   },
   async mounted() {
-    /*window.onbeforeunload = async function (){*/
     /*判断本地存储是否有登录信息*/
     if (isNotEmpty(sessionStorage.getItem("loginUser"))) {
       let result = await hasLoginUser();

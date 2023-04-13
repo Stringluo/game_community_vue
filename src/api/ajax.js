@@ -20,7 +20,7 @@ export function ajax(url, data = {}, type = 'GET') {
         if(!loginFilter(url)){
             return null;
         }
-        url = "api/" + url;
+        //url = "api/" + url;
         let promise;
         if (type === 'GET') {
             //get请求，参数是key=value的字符串
